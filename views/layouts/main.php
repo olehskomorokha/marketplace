@@ -38,8 +38,10 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav ms-auto'],
         'items' => [
-            ['label' => 'Products', 'url' => ['/site/index']],
+            ['label' => 'Products', 'url' => ['/product/products']],
             ['label' => 'Create Product', 'url' => ['/product/create-page']],
+            ['label' => 'Login', 'url' => ['/site/login']],
+            ['label' => 'Register', 'url' => ['/site/register']],
         ]
     ]);
     NavBar::end();

@@ -25,26 +25,12 @@ class ProductController extends Controller
                     'update-price' => ['post'],
                     'update-attributes' => ['post'],
                     'create-page' => ['get', 'post'],
+                    'products' => ['get'],
                     'search' => ['get'],
                     'view' => ['get'],
                 ],
             ],
         ];
-    }
-
-    public function actionCreate()
-    {
-        $model = new Product();
-        $data = $this->requestData();
-        $model->setAttributes($data, false);
-        $model->attributes_data = $this->extractAttributes($data);
-        $model->status = $model->status ?: Product::STATUS_DRAFT;
-
-        if (!$model->save()) {
-            return $this->errorResponse('Product was not saved', $model->getErrors());
-        }
-
-        return $this->successResponse($this->serializeProduct($model), 201);
     }
 
     public function actionCreatePage()
@@ -55,7 +41,16 @@ class ProductController extends Controller
 
         $categories = Category::getAllCategories();
         
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $model->user_id = Yii::$app->user->isGuest ? null : Yii::$app->user->id;
+
+            if (!$model->save()) {
+                return $this->render('create', [
+                    'model' => $model,
+                    'categories' => $categories,
+                ]);
+            }
+
             Yii::$app->session->setFlash('success', 'Product created.');
 
             return $this->redirect(['/site/index']);
@@ -65,6 +60,11 @@ class ProductController extends Controller
             'model' => $model,
             'categories' => $categories,
         ]);
+    }
+
+    public function actionProducts()
+    {
+        return $this->render('products');
     }
 
     public function actionView($id)

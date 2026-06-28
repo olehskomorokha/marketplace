@@ -11,9 +11,9 @@ use app\models\ProductPriceHistory;
 
 class Product extends ActiveRecord
 {
-    public const STATUS_DRAFT = 'draft';
-    public const STATUS_ACTIVE = 'active';
-    public const STATUS_ARCHIVED = 'archived';
+    public const STATUS_DRAFT = 'записаний';
+    public const STATUS_ACTIVE = 'активний';
+    public const STATUS_ARCHIVED = 'архівований';
 
     public $attributes_data = [];
     public $category_name;
@@ -29,7 +29,7 @@ class Product extends ActiveRecord
             [['name', 'description', 'price', 'category_id', 'status'], 'required'],
             [['description'], 'string'],
             [['price'], 'number', 'min' => 0],
-            [['category_id'], 'integer'],
+            [['category_id', 'user_id'], 'integer'],
             [['name', 'category_name'], 'string', 'max' => 255],
             [['status'], 'in', 'range' => [self::STATUS_DRAFT, self::STATUS_ACTIVE, self::STATUS_ARCHIVED]],
             [['attributes_json'], 'safe'],
@@ -57,6 +57,7 @@ class Product extends ActiveRecord
             'price' => 'Price',
             'category_id' => 'Category',
             'category_name' => 'Category',
+            'user_id' => 'User',
             'status' => 'Status',
             'attributes_json' => 'Attributes',
         ];
@@ -136,5 +137,10 @@ class Product extends ActiveRecord
     public function getCategory()
     {
         return $this->hasOne(Category::class, ['id' => 'category_id']);
+    }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 }
