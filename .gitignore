@@ -1,0 +1,95 @@
+# phpstorm project files
+.idea
+
+# visual studio code project files
+.vscode
+
+# netbeans project files
+nbproject
+
+# zend studio for eclipse project files
+.buildpath
+.project
+.settings
+
+# windows thumbnail cache
+Thumbs.db
+
+# composer vendor dir
+/vendor
+
+# composer itself is not needed
+composer.phar
+
+# Mac DS_Store Files
+.DS_Store
+
+# phpunit itself is not needed
+phpunit.phar
+# local phpunit config
+/phpunit.xml
+
+tests/_output/*
+tests/_support/_generated
+
+#vagrant folder
+/.vagrant
+
+# ==========================================
+# VS Code IDE Settings
+# ==========================================
+.vscode/
+*.code-workspace
+
+# ==========================================
+# PHP & Composer Dependency Manager
+# ==========================================
+/vendor/
+composer.phar
+.phpunit.result.cache
+
+# ==========================================
+# Yii2 Framework Core & Application Runtime
+# ==========================================
+/runtime/*
+!/runtime/.gitignore
+
+/web/assets/*
+!/web/assets/.gitignore
+
+# If using the Yii2 Advanced Template, uncomment these:
+# /backend/runtime/*
+# !/backend/runtime/.gitignore
+# /backend/web/assets/*
+# !/backend/web/assets/.gitignore
+# /frontend/runtime/*
+# !/frontend/runtime/.gitignore
+# /frontend/web/assets/*
+# !/frontend/web/assets/.gitignore
+# /console/runtime/*
+# !/console/runtime/.gitignore
+
+# ==========================================
+# Environments & Local Configurations
+# ==========================================
+/config/local.php
+/config/web-local.php
+/config/db-local.php
+/config/params-local.php
+
+# If using Yii2 init environments:
+/environments/index.php
+/web/index.php
+/web/index-test.php
+/yii
+/yii_test
+/yii_test.bat
+
+# ==========================================
+# Development Tools, Logs & OS Cache
+# ==========================================
+.env
+.env.local
+*.log
+.DS_Store
+Thumbs.db

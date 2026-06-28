@@ -1,0 +1,71 @@
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    background: #f7f8fa;
+    color: #1f2933;
+}
+
+main > .container {
+    padding: 32px 16px;
+}
+
+.navbar {
+    box-shadow: 0 1px 0 rgba(15, 23, 42, 0.06);
+}
+
+.navbar-brand {
+    font-weight: 700;
+}
+
+.page-heading {
+    margin-bottom: 24px;
+}
+
+.page-heading h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.table-responsive,
+.empty-state {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+}
+
+.table-responsive {
+    overflow: hidden;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.table th {
+    color: #52606d;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.empty-state {
+    padding: 32px;
+}
+
+.empty-state h2 {
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.empty-state p {
+    color: #52606d;
+    margin-bottom: 0;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
