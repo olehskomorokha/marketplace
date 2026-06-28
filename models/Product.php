@@ -16,6 +16,7 @@ class Product extends ActiveRecord
     public const STATUS_ARCHIVED = 'archived';
 
     public $attributes_data = [];
+    public $category_name;
 
     public static function tableName()
     {
@@ -29,7 +30,7 @@ class Product extends ActiveRecord
             [['description'], 'string'],
             [['price'], 'number', 'min' => 0],
             [['category_id'], 'integer'],
-            [['name'], 'string', 'max' => 255],
+            [['name', 'category_name'], 'string', 'max' => 255],
             [['status'], 'in', 'range' => [self::STATUS_DRAFT, self::STATUS_ACTIVE, self::STATUS_ARCHIVED]],
             [['attributes_json'], 'safe'],
             [['attributes_data'], 'safe'],
@@ -55,6 +56,7 @@ class Product extends ActiveRecord
             'description' => 'Description',
             'price' => 'Price',
             'category_id' => 'Category',
+            'category_name' => 'Category',
             'status' => 'Status',
             'attributes_json' => 'Attributes',
         ];

@@ -2,15 +2,16 @@
 
 namespace app\controllers;
 
+use app\models\Category;
 use app\models\Product;
 use Yii;
 use yii\db\Expression;
 use yii\filters\VerbFilter;
-use yii\helpers\ArrayHelper;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
+use yii\helpers\ArrayHelper;
 
 class ProductController extends Controller
 {
@@ -23,6 +24,7 @@ class ProductController extends Controller
                     'create' => ['post'],
                     'update-price' => ['post'],
                     'update-attributes' => ['post'],
+                    'create-page' => ['get', 'post'],
                     'search' => ['get'],
                     'view' => ['get'],
                 ],
@@ -43,6 +45,26 @@ class ProductController extends Controller
         }
 
         return $this->successResponse($this->serializeProduct($model), 201);
+    }
+
+    public function actionCreatePage()
+    {
+        $model = new Product([
+            'status' => Product::STATUS_DRAFT,
+        ]);
+
+        $categories = Category::getAllCategories();
+        
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'Product created.');
+
+            return $this->redirect(['/site/index']);
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+            'categories' => $categories,
+        ]);
     }
 
     public function actionView($id)

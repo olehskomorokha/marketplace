@@ -39,6 +39,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'options' => ['class' => 'navbar-nav ms-auto'],
         'items' => [
             ['label' => 'Products', 'url' => ['/site/index']],
+            ['label' => 'Create Product', 'url' => ['/product/create-page']],
         ]
     ]);
     NavBar::end();

@@ -31,7 +31,8 @@ main > .container {
 }
 
 .table-responsive,
-.empty-state {
+.empty-state,
+.form-panel {
     background: #fff;
     border: 1px solid #e5e7eb;
     border-radius: 8px;
@@ -64,6 +65,18 @@ main > .container {
 .empty-state p {
     color: #52606d;
     margin-bottom: 0;
+}
+
+.form-panel {
+    max-width: 720px;
+    padding: 24px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 24px;
 }
 
 .form-group {

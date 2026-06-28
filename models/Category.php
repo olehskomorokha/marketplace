@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 
 class Category extends ActiveRecord
 {
@@ -26,6 +27,16 @@ class Category extends ActiveRecord
             'name' => 'Name',
         ];
     }
+    
+    public static function getAllCategories()
+    {
+        return ArrayHelper::map(
+            Category::find()->orderBy(['name' => SORT_ASC])->all(),
+            'id',
+            'name'
+        );
+    }
+    
     public function getProducts()
     {
         return $this->hasMany(Product::class, ['category_id' => 'id']);
