@@ -30,6 +30,17 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 
 <header id="header">
     <?php
+    $items = [  
+        ['label' => 'Products', 'url' => ['/product/products']],
+        ['label' => 'Create Product', 'url' => ['/product/create-page']],
+    ];
+    if (Yii::$app->user->isGuest) {
+        $items[] = ['label' => 'Login', 'url' => ['/site/login']];
+        $items[] = ['label' => 'Register', 'url' => ['/site/register']];
+    } else {
+        $items[] = ['label' => 'Home page', 'url' => ['/user/home']];
+    }
+
     NavBar::begin([
         'brandLabel' => 'My Marketplace',
         'brandUrl' => Yii::$app->homeUrl,
@@ -37,12 +48,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     ]);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav ms-auto'],
-        'items' => [
-            ['label' => 'Products', 'url' => ['/product/products']],
-            ['label' => 'Create Product', 'url' => ['/product/create-page']],
-            ['label' => 'Login', 'url' => ['/site/login']],
-            ['label' => 'Register', 'url' => ['/site/register']],
-        ]
+        'items' => $items
     ]);
     NavBar::end();
     ?>
