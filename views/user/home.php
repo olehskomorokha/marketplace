@@ -57,39 +57,53 @@ $this->registerCssFile(Url::to('@web/css/user-home.css'), ['depends' => [\app\as
                 <div class="user-product-list">
                     <?php foreach ($user->products as $product): ?>
                         <article class="user-product-item">
+                            <?php
+                            $deleteModalId = 'delete-product-modal-' . $product->id;
+                            ?>
                             <h3><?= Html::encode($product->name) ?></h3>
                             <p><?= Html::encode($product->description) ?></p>
                             <strong><?= Html::encode($product->price) ?></strong>
-                            <?= Html::a('Edit', ['product/update', 'id' => $product->id], ['class' => 'btn btn-outline-primary']) ?>
-                            <?php $deleteModalId = 'delete-product-modal-' . $product->id; ?>
-                            <?= Html::button('Delete', [
-                                'class' => 'btn btn-outline-danger',
-                                'data-bs-toggle' => 'modal',
-                                'data-bs-target' => '#' . $deleteModalId,
-                            ]) ?>
 
-                            <div class="modal fade" id="<?= Html::encode($deleteModalId) ?>" tabindex="-1" aria-labelledby="<?= Html::encode($deleteModalId) ?>-label" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="<?= Html::encode($deleteModalId) ?>-label">Delete product?</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            Are you sure you want to delete "<?= Html::encode($product->name) ?>"?
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                                            <?= Html::beginForm(['/product/delete', 'id' => $product->id], 'post') ?>
-                                                <?= Html::submitButton('OK', ['class' => 'btn btn-danger']) ?>
-                                            <?= Html::endForm() ?>
-                                        </div>
-                                    </div>
+                            <div class="product-hover-menu">
+                                <div class="product-hover-details">
+                                    <span><?= Html::encode($product->status) ?></span>
+                                    <strong><?= Html::encode($product->category ? $product->category->name : 'No category') ?></strong>
+                                    <small>ID: <?= Html::encode($product->id) ?></small>
                                 </div>
+                                <?= Html::a('Edit', ['/product/update', 'id' => $product->id], ['class' => 'btn btn-primary']) ?>
+                                <?= Html::button('Delete', [
+                                    'class' => 'btn btn-outline-danger',
+                                    'data-bs-toggle' => 'modal',
+                                    'data-bs-target' => '#' . $deleteModalId,
+                                ]) ?>
                             </div>
+
                         </article>
                     <?php endforeach; ?>
                 </div>
+
+                <?php foreach ($user->products as $product): ?>
+                    <?php $deleteModalId = 'delete-product-modal-' . $product->id; ?>
+                    <div class="modal fade" id="<?= Html::encode($deleteModalId) ?>" tabindex="-1" aria-labelledby="<?= Html::encode($deleteModalId) ?>-label" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="<?= Html::encode($deleteModalId) ?>-label">Delete product?</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete "<?= Html::encode($product->name) ?>"?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <?= Html::beginForm(['/product/delete', 'id' => $product->id], 'post') ?>
+                                        <?= Html::submitButton('OK', ['class' => 'btn btn-danger']) ?>
+                                    <?= Html::endForm() ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
             <?php else: ?>
                 <p class="products-empty">No products loaded.</p>
             <?php endif; ?>

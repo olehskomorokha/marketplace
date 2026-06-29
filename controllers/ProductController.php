@@ -9,6 +9,7 @@ use yii\db\Expression;
 use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
+use ProductPriceHistory;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use yii\helpers\ArrayHelper;
@@ -25,6 +26,7 @@ class ProductController extends Controller
                     'update-price' => ['post'],
                     'update-attributes' => ['post'],
                     'create-page' => ['get', 'post'],
+                    'update' => ['get', 'post'],
                     'products' => ['get'],
                     'search' => ['get'],
                     'view' => ['get'],
@@ -66,6 +68,23 @@ class ProductController extends Controller
     public function actionProducts()
     {
         return $this->render('products');
+    }
+
+    public function actionUpdate($id)
+    {
+        $model = $this->findProduct($id);
+        $categories = Category::getAllCategories();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'Product updated.');
+
+            return $this->redirect(['/user/home']);
+        }
+    
+        return $this->render('update', [
+            'model' => $model,
+            'categories' => $categories,
+        ]);
     }
 
     public function actionView($id)
