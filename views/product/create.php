@@ -30,9 +30,9 @@ $this->title = 'Create Product';
         <?= $form->field($model, 'category_id')->dropDownList($categories, ['prompt' => 'Select Category']) ?>
 
         <?= $form->field($model, 'status')->dropDownList([
-            Product::STATUS_DRAFT => 'Draft',
-            Product::STATUS_ACTIVE => 'Active',
-            Product::STATUS_ARCHIVED => 'Archived',
+            Product::STATUS_DRAFT => 'Записаинй',
+            Product::STATUS_ACTIVE => 'Активний',
+            Product::STATUS_ARCHIVED => 'Архівований',
         ]) ?>
 
         <div class="form-actions">
