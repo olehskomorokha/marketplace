@@ -18,7 +18,7 @@ What is already in place:
 - PostgreSQL configuration example in `config/db.php`
 - JSON request parsing for API requests
 - Product and price history models
-- A product API controller with create, view, update-price, update-attributes, and search actions
+- A product controller with create-page, update, view, update-price, and update-attributes actions
 - A database migration for the product tables
 
 Important note:
@@ -40,11 +40,11 @@ php yii migrate
 
 ### Product API endpoints
 
-- `POST /index.php?r=product/create`
+- `GET|POST /index.php?r=product/create-page`
+- `GET|POST /index.php?r=product/update&id=1`
 - `GET /index.php?r=product/view&id=1`
 - `POST /index.php?r=product/update-price&id=1`
 - `POST /index.php?r=product/update-attributes&id=1`
-- `GET /index.php?r=product/search?q=phone`
 
 ### Example request body
 

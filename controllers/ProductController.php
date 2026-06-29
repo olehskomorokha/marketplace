@@ -5,14 +5,11 @@ namespace app\controllers;
 use app\models\Category;
 use app\models\Product;
 use Yii;
-use yii\db\Expression;
 use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
-use ProductPriceHistory;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
-use yii\helpers\ArrayHelper;
 
 class ProductController extends Controller
 {
@@ -22,13 +19,11 @@ class ProductController extends Controller
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
-                    'create' => ['post'],
                     'update-price' => ['post'],
                     'update-attributes' => ['post'],
                     'create-page' => ['get', 'post'],
                     'update' => ['get', 'post'],
                     'products' => ['get'],
-                    'search' => ['get'],
                     'view' => ['get'],
                     'delete' => ['post'],
                 ],
@@ -134,50 +129,6 @@ class ProductController extends Controller
         return $this->redirect(['/user/home']);
     }
 
-    public function actionSearch()
-    {
-        $query = trim((string) Yii::$app->request->get('q', ''));
-        $category = trim((string) Yii::$app->request->get('category', ''));
-        $brand = trim((string) Yii::$app->request->get('brand', ''));
-        $status = trim((string) Yii::$app->request->get('status', ''));
-
-        $products = Product::find()
-            ->alias('p')
-            ->joinWith('category c')
-            ->orderBy(['p.id' => SORT_DESC]);
-
-        if ($query !== '') {
-            $products->andWhere([
-                'or',
-                ['ilike', 'p.name', $query],
-                ['ilike', 'p.description', $query],
-                ['ilike', 'c.name', $query],
-                new Expression('p.attributes_json::text ILIKE :query', [':query' => '%' . $query . '%']),
-            ]);
-        }
-
-        if ($category !== '') {
-            $products->andWhere(['ilike', 'c.name', $category]);
-        }
-
-        if ($brand !== '') {
-            $products->andWhere(new Expression('p.attributes_json::text ILIKE :brand', [':brand' => '%' . $brand . '%']));
-        }
-
-        if ($status !== '') {
-            $products->andWhere(['p.status' => $status]);
-        }
-
-        $items = [];
-        foreach ($products->limit(20)->all() as $product) {
-            $items[] = $this->serializeProduct($product);
-        }
-
-        return $this->successResponse([
-            'items' => $items,
-            'count' => count($items),
-        ]);
-    }
 
     private function findProduct($id)
     {
@@ -228,16 +179,5 @@ class ProductController extends Controller
         Yii::$app->response->statusCode = $statusCode;
 
         return $data;
-    }
-
-    private function errorResponse($message, array $errors = [])
-    {
-        Yii::$app->response->format = Response::FORMAT_JSON;
-        Yii::$app->response->statusCode = 422;
-
-        return [
-            'message' => $message,
-            'errors' => $errors,
-        ];
     }
 }
