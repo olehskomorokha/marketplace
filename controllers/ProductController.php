@@ -28,6 +28,7 @@ class ProductController extends Controller
                     'products' => ['get'],
                     'search' => ['get'],
                     'view' => ['get'],
+                    'delete' => ['post'],
                 ],
             ],
         ];
@@ -103,6 +104,15 @@ class ProductController extends Controller
         $product->save(false, ['attributes_json', 'updated_at']);
 
         return $this->successResponse($this->serializeProduct($product));
+    }
+
+    public function actionDelete($id)
+    {
+        $product = $this->findProduct($id);
+        $product->deleteProduct($id);
+        Yii::$app->session->setFlash('success', 'Product deleted successfully.');
+
+        return $this->redirect(['/user/home']);
     }
 
     public function actionSearch()

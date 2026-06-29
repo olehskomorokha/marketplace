@@ -82,6 +82,28 @@ class Product extends ActiveRecord
             ->orderBy(['changed_at' => SORT_DESC]);
     }
 
+    public function deleteProduct($id)
+    {
+        $transaction = static::getDb()->beginTransaction();
+
+        try {
+            // Delete related price histories
+            ProductPriceHistory::deleteAll(['product_id' => $this->id]);
+
+            // Delete the product itself
+            $this->delete();
+
+            $transaction->commit();
+            return true;
+        } catch (\Throwable $exception) {
+            if ($transaction->isActive) {
+                $transaction->rollBack();
+            }
+
+            throw $exception;
+        }
+    }
+    
     public function updatePrice($newPrice, $changedBy = null)
     {
         $oldPrice = $this->price;
