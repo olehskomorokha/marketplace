@@ -11,7 +11,10 @@ class ContactFormCest
     {
         $I->see('Contact', 'h1');
     }
-
+    public function getCategory()
+    {
+        return $this->hasOne(Category::class, ['id' => 'category_id']);
+    }
     public function submitEmptyForm(\FunctionalTester $I)
     {
         $I->submitForm('#contact-form', []);

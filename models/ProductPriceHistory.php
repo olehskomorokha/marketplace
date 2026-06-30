@@ -35,8 +35,4 @@ class ProductPriceHistory extends ActiveRecord
         ];
     }
 
-    public function getProduct()
-    {
-        return $this->hasOne(Product::class, ['id' => 'product_id']);
-    }
 }

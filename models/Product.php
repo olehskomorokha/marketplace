@@ -6,6 +6,7 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
+use app\models\Category;
 use yii\db\Transaction;
 use app\models\ProductPriceHistory;
 
@@ -20,7 +21,7 @@ class Product extends ActiveRecord
 
     public static function tableName()
     {
-        return '{{%product}}';
+        return '{{%product}}';  
     }
 
     public function rules()
@@ -76,13 +77,7 @@ class Product extends ActiveRecord
         return parent::beforeSave($insert);
     }
 
-    public function getPriceHistories()
-    {
-        return $this->hasMany(ProductPriceHistory::class, ['product_id' => 'id'])
-            ->orderBy(['changed_at' => SORT_DESC]);
-    }
-
-    public function deleteProduct($id)
+    public function deleteProduct()
     {
         $transaction = static::getDb()->beginTransaction();
 
@@ -156,13 +151,14 @@ class Product extends ActiveRecord
 
         return is_array($decoded) ? $decoded : [];
     }
-    public function getCategory()
-    {
-        return $this->hasOne(Category::class, ['id' => 'category_id']);
-    }
 
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    public function getCategory()
+    {
+        return $this->hasOne(Category::class, ['id' => 'category_id']);
     }
 }

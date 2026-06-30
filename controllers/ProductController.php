@@ -10,6 +10,7 @@ use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
+use app\services\ProductService;
 
 class ProductController extends Controller
 {
@@ -67,55 +68,67 @@ class ProductController extends Controller
 
     public function actionUpdate($id)
     {
-        $model = $this->findProduct($id);
+        $model = Product::findOne($id);
+        $updatedModel = Yii::$app->request->post();
         $categories = Category::getAllCategories();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Product updated.');
+        if ($model->load($updatedModel)) {
+            $productService = new ProductService();
+            $updatedModel = $productService->updateProduct($model, $id);
 
+            if ($updatedModel === false) {
+                Yii::$app->session->setFlash('error', 'Product was not updated.');
+
+                return $this->render('update', [
+                    'model' => $model,
+                    'categories' => $categories,
+                ]);
+            }
+
+            Yii::$app->session->setFlash('success', 'Product updated.');
             return $this->redirect(['/user/home']);
         }
-    
+
+
         return $this->render('update', [
             'model' => $model,
             'categories' => $categories,
         ]);
-    }
 
-    public function actionView($id)
-    {
-        $product = $this->findProduct($id);
 
-        return $this->successResponse($this->serializeProduct($product));
+//        $model = $this->findProduct($id);
+//        $categories = Category::getAllCategories();
+//
+//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//            Yii::$app->session->setFlash('success', 'Product updated.');
+//
+//            return $this->redirect(['/user/home']);
+//        }
+//
+//        return $this->render('update', [
+//            'model' => $model,
+//            'categories' => $categories,
+//        ]);
     }
 
     public function actionUpdatePrice($id)
     {
         $product = $this->findProduct($id);
-        $data = $this->requestData();
+        $newPrice = Yii::$app->request->post('newPrice');
 
-        if (!array_key_exists('price', $data)) {
-            throw new BadRequestHttpException('Field "price" is required.');
+        if ($newPrice === null || $newPrice === '') {
+            throw new BadRequestHttpException('Field "newPrice" is required.');
         }
 
-        $changedBy = $data['changed_by'] ?? null;
-        $product->updatePrice($data['price'], $changedBy);
+        $productService = new ProductService();
+        $productService->updatePrice($product, $newPrice);
 
-        return $this->successResponse($this->serializeProduct($product));
+        return $this->redirect(['/user/home']);
     }
 
-    public function actionUpdateAttributes($id)
+    public function actionView($id)
     {
         $product = $this->findProduct($id);
-        $data = $this->requestData();
-        $attributes = $this->extractAttributes($data);
-
-        if (empty($attributes)) {
-            throw new BadRequestHttpException('Field "attributes" must contain at least one value.');
-        }
-
-        $product->attributes_data = array_merge($product->attributes_data, $attributes);
-        $product->save(false, ['attributes_json', 'updated_at']);
 
         return $this->successResponse($this->serializeProduct($product));
     }
