@@ -44,7 +44,7 @@ class ProductService
         {
             $this->updatePrice($model, $updatedProduct->price);
         }
-
+        $model->update();
         return $model;
     }
 
@@ -67,6 +67,7 @@ class ProductService
 
             $transaction->commit();
             return $newPrice;
+
         } catch (\Throwable $exception) {
             if ($transaction->isActive) {
                 $transaction->rollBack();
