@@ -35,7 +35,7 @@ $this->registerCssFile(Url::to('@web/css/user-home.css'), ['depends' => [\app\as
             </dl>
 
             <div class="profile-actions">
-                <?= Html::a('Update Profile', ['update-profile'], ['class' => 'btn btn-primary']) ?>
+                <?= Html::a('Update Profile', ['user/update', 'id' => $user->id], ['class' => 'btn btn-primary']) ?>
                 <?= Html::a('Change Password', ['change-password'], ['class' => 'btn btn-outline-secondary']) ?>
                 <?= Html::a('Logout', ['site/logout'], [
                     'class' => 'btn btn-danger',

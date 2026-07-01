@@ -94,36 +94,6 @@ class ProductController extends Controller
             'model' => $model,
             'categories' => $categories,
         ]);
-
-
-//        $model = $this->findProduct($id);
-//        $categories = Category::getAllCategories();
-//
-//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-//            Yii::$app->session->setFlash('success', 'Product updated.');
-//
-//            return $this->redirect(['/user/home']);
-//        }
-//
-//        return $this->render('update', [
-//            'model' => $model,
-//            'categories' => $categories,
-//        ]);
-    }
-
-    public function actionUpdatePrice($id)
-    {
-        $product = $this->findProduct($id);
-        $newPrice = Yii::$app->request->post('newPrice');
-
-        if ($newPrice === null || $newPrice === '') {
-            throw new BadRequestHttpException('Field "newPrice" is required.');
-        }
-
-        $productService = new ProductService();
-        $productService->updatePrice($product, $newPrice);
-
-        return $this->redirect(['/user/home']);
     }
 
     public function actionView($id)
